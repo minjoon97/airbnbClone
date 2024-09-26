@@ -7,9 +7,13 @@ import { useState } from "react";
 
 interface SearchCateProps {
   searchState: string;
+  fetchedCityList: string[];
 }
 
-const HeaderSearch: React.FC<SearchCateProps> = ({ searchState }) => {
+const HeaderSearch: React.FC<SearchCateProps> = ({
+  searchState,
+  fetchedCityList,
+}) => {
   const [activeState, setactiveState] = useState(false);
   return (
     <div className={styles.wrapper}>
@@ -21,7 +25,10 @@ const HeaderSearch: React.FC<SearchCateProps> = ({ searchState }) => {
         }
       >
         <ul className={styles.searchBoxUl}>
-          <SearchPlaceItem setactiveState={setactiveState}></SearchPlaceItem>
+          <SearchPlaceItem
+            setactiveState={setactiveState}
+            fetchedCityList={fetchedCityList}
+          ></SearchPlaceItem>
           <SearchBoxItem
             searchState={searchState}
             setactiveState={setactiveState}

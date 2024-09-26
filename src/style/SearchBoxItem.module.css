@@ -27,17 +27,12 @@
   cursor: pointer;
 }
 
-.itemContainer > p {
+.itemContainer > p:nth-of-type(1) {
   font-size: 12px;
   font-weight: 500;
 }
 
-.itemContainer > input {
-  width: 80%;
-  border: none;
-  background-color: transparent;
-}
-
-.itemContainer > input:focus {
-  outline: none;
+.itemContainer > p:nth-of-type(2) {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.5);
 }

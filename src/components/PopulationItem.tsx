@@ -1,5 +1,6 @@
 import styles from "../style/PopulationItem.module.css";
-import { Dispatch, SetStateAction, useState, useRef } from "react";
+import { Dispatch, SetStateAction, useState, useRef, useEffect } from "react";
+import PopulationBox from "./PopulationBox.tsx";
 
 interface PopulationItemProps {
   searchState: string;
@@ -11,10 +12,27 @@ const PopulationItem: React.FC<PopulationItemProps> = ({
   setactiveState,
 }) => {
   const [PopulationItemState, setPopulationItemState] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const liRef = useRef<HTMLLIElement>(null);
+  const pRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (liRef.current && !liRef.current.contains(event.target as Node)) {
+        setactiveState(false);
+        setPopulationItemState(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <li
+      ref={liRef}
       className={`
       ${styles.itemContainer} 
       ${searchState === "체험" ? styles.visible : ""} 
@@ -22,25 +40,17 @@ const PopulationItem: React.FC<PopulationItemProps> = ({
     `}
       onClick={(e) => {
         e.preventDefault();
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
+        setactiveState(true);
+        setPopulationItemState(true);
       }}
     >
       <p>여행자</p>
-      <input
-        type="text"
-        placeholder="게스트 추가"
-        ref={inputRef}
-        onFocus={() => {
-          setactiveState(true);
-          setPopulationItemState(true);
-        }}
-        onBlur={() => {
-          setactiveState(false);
-          setPopulationItemState(false);
-        }}
-      ></input>
+      <p ref={pRef}>게스트 추가</p>
+      <PopulationBox
+        PopulationItemState={PopulationItemState}
+        pRef={pRef}
+        searchState={searchState}
+      ></PopulationBox>
     </li>
   );
 };
